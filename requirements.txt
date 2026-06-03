@@ -1,0 +1,22 @@
+# Core
+langchain>=0.2.0
+langgraph>=0.2.0
+langchain-openai>=0.1.0
+langchain-ollama>=0.1.0
+pydantic>=2.5.0
+python-dotenv>=1.0.0
+
+# Data
+yfinance>=0.2.40
+pandas>=2.0.0
+ta>=0.11.0
+
+# UI
+streamlit>=1.32.0
+
+# PDF
+fpdf2>=2.7.0
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
