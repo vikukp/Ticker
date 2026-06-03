@@ -626,8 +626,13 @@ def _fallback_synthesizer_recommendation(
         total_analysts = sentiment.analyst_buy + sentiment.analyst_hold + sentiment.analyst_sell
         if total_analysts == 0:
             caveats.append("Limited analyst coverage")
+            confidence -= 5  # Less data = less certainty
     else:
         caveats.append("Sentiment data unavailable")
+        confidence -= 10  # Penalize for incomplete data
+
+    if not market_data:
+        confidence -= 10  # Penalize for missing market data
 
     confidence = _clamp_int(int(confidence), 0, 100)
     sentiment_line = sentiment.summary if sentiment else "Sentiment data unavailable."
@@ -754,8 +759,13 @@ def run_synthesizer_agent(
         total_analysts = sentiment.analyst_buy + sentiment.analyst_hold + sentiment.analyst_sell
         if total_analysts == 0:
             caveats.append("Limited analyst coverage")
+            confidence -= 5  # Less data = less certainty
     else:
         caveats.append("Sentiment data unavailable")
+        confidence -= 10  # Penalize for incomplete data
+
+    if not market_data:
+        confidence -= 10  # Penalize for missing market data
 
     confidence = _clamp_int(int(confidence), 0, 100)
 
