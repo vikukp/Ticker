@@ -5,6 +5,7 @@ import streamlit as st
 from app.graph import run_research
 from app.models import FinalRecommendation
 from app.pdf_report import generate_pdf
+from app.tools import get_stock_info
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -72,8 +73,15 @@ if analyze_btn and ticker_input and not is_busy:
 
 # Phase 2: Form is locked — run the analysis
 if st.session_state.analyzing and st.session_state.pending_ticker:
-    with st.spinner("Running multi-agent research pipeline..."):
-        st.session_state.result = _cached_research(st.session_state.pending_ticker)
+    ticker = st.session_state.pending_ticker
+    # Quick company name lookup for display
+    try:
+        info = get_stock_info(ticker)
+        company_name = info.get("company_name", ticker)
+    except Exception:
+        company_name = ticker
+    with st.spinner(f"Analyzing {company_name} ({ticker})..."):
+        st.session_state.result = _cached_research(ticker)
     st.session_state.analyzing = False
     st.rerun()
 
